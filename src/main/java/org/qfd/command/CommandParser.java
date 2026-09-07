@@ -1,8 +1,10 @@
 package org.qfd.command;
 
+import org.qfd.exception.InvalidInputException;
+
 public class CommandParser {
 
-    public DatabaseCommand parse(String rawInput) {
+    public DatabaseCommand parse(String rawInput) throws InvalidInputException {
         if (rawInput == null || rawInput.trim().isEmpty()) {
             throw new IllegalArgumentException("Input cannot be empty");
         }
@@ -25,7 +27,13 @@ public class CommandParser {
                 }
                 yield new GetCommand(tokens[1]);
             }
-            default -> null;
+            case "DELETE" -> {
+                if (tokens.length < 2) {
+                    throw new IllegalArgumentException("ERR: DELETE requires a key.");
+                }
+                yield new DeleteCommand(tokens[1]);
+            }
+            default -> throw new InvalidInputException();
         };
     }
 

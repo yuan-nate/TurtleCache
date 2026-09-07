@@ -3,6 +3,7 @@ package org.qfd;
 import org.qfd.command.CommandParser;
 import org.qfd.command.DatabaseCommand;
 import org.qfd.engine.MainStorage;
+import org.qfd.exception.InvalidInputException;
 
 import java.util.Scanner;
 
@@ -49,6 +50,9 @@ public class ConsoleRunner {
                 // Catches missing command arguments or bad parser syntax
                 System.out.println(e.getMessage());
             } catch (Exception e) {
+                if(e instanceof InvalidInputException) {
+                  System.out.println(e.getMessage());
+                }
                 // Safe catch-all fallback to keep the terminal loop from crashing
                 System.out.println("ERR: Internal system error: " + e.getMessage());
             }
